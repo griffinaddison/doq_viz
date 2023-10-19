@@ -1,0 +1,257 @@
+
+<mujoco model="twist" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <!-- XACRO PARAMETERS -->
+  <!-- Body parameters -->
+  <xacro:property name="body_length" value="0.124"/>
+  <xacro:property name="body_width" value="0.24"/>
+  <xacro:property name="body_height" value="0.104"/>
+  <xacro:property name="body_mass" value="1.900"/> <!--TODO UPDATE-->
+
+  <xacro:property name="motor_length" value="0.03525"/>
+  <xacro:property name="motor_radius" value="0.0565"/>
+  <xacro:property name="motor_mass" value="0.550"/>
+
+  <xacro:property name="battery_length" value="0.060"/>
+  <xacro:property name="battery_width" value="0.150"/>
+  <xacro:property name="battery_height" value="0.040"/>
+  <xacro:property name="battery_mass" value="0.630"/> <!--TODO UPDATE-->
+
+  <xacro:property name="spine_length" value="0.04"/>
+  <xacro:property name="spine_radius" value="0.02"/>
+  <xacro:property name="spine_mass" value="0.400"/>
+  
+  <xacro:property name="upper_link_length" value="0.206"/>
+  <xacro:property name="upper_link_width" value="0.05"/> <!--est. average-->
+  <xacro:property name="upper_link_height" value="0.032"/>
+  <xacro:property name="upper_link_mass" value="0.250"/> <!--TODO UPDATE-->
+
+  <xacro:property name="lower_link_length" value="0.206"/><!--TODO UPDATE-->
+  <xacro:property name="lower_link_radius" value="0.013"/>
+  <xacro:property name="lower_link_mass" value="0.067"/> <!--TODO UPDATE-->
+
+  <xacro:property name="toe_radius" value="0.0175"/> 
+  <xacro:property name="toe_mass" value="0.030"/><!--TODO UPDATE-->
+
+  <xacro:property name="pi" value="3.1415926"/>
+
+
+  <!-- Body origins location descriptions, as calculated for front left leg -->
+  <xacro:property name="limb_base_to_hip_joint_x" value="${motor_length + motor_radius}"/>
+  <xacro:property name="limb_base_to_hip_joint_y" value="0.0"/>
+  <xacro:property name="limb_base_to_hip_joint_z" value="0.0"/>  
+
+  <xacro:property name="hip_joint_to_upper_x" value="0.0"/>
+  <xacro:property name="hip_joint_to_upper_y" value="${hip_joint_to_hip_module_y + (motor_length/2) + motor_length + knee_hip_gap + upper_link_height/2}"/>
+  <xacro:property name="hip_joint_to_upper_z" value="0.0"/>  
+
+  <xacro:property name="upper_to_lower_x" value="0.0"/>
+  <xacro:property name="upper_to_lower_y" value="0.0"/>
+  <xacro:property name="upper_to_lower_z" value="${-upper_link_length}"/>  
+  
+
+  <!-- Body offsets as calculated for front left leg -->
+  <xacro:property name="limb_base_offset_x" value="${body_length}/2"/>
+  <xacro:property name="limb_base_offset_y" value="0.073"/>
+  <xacro:property name="limb_base_offset_z" value="0.0"/>
+
+  <xacro:property name="upper_to_upper_link_x" value="0.0"/>
+  <xacro:property name="upper_to_upper_link_y" value="0.0"/>
+  <xacro:property name="upper_to_upper_link_z" value="${-upper_link_length/2}"/>
+
+  <xacro:property name="knee_hip_gap" value="0.022"/>
+  <xacro:property name="spine_gap" value="0.027"/>
+  <xacro:property name="spine_module_offset" value="0.073"/>
+
+
+  <xacro:property name="hip_joint_to_hip_module_x" value="0.0"/>
+  <xacro:property name="hip_joint_to_hip_module_y" value="-0.008375"/>
+  <xacro:property name="hip_joint_to_hip_module_z" value="0.0"/>
+
+  <xacro:property name="upper_to_knee_module_x" value="0"/>
+  <xacro:property name="upper_to_knee_module_y" value="${(-upper_link_height/2) - (motor_length/2)}"/>
+  <xacro:property name="upper_to_knee_module_z" value="0.0"/>
+
+  <xacro:property name="lower_to_toe_x" value="0.0"/>
+  <xacro:property name="lower_to_toe_y" value="0.0"/>
+  <xacro:property name="lower_to_toe_z" value="-0.206"/>
+
+  <xacro:property name="abduc_limit_min" value="${-pi/2}"/>
+  <xacro:property name="abduc_limit_max" value="${pi/2}7"/>
+  <xacro:property name="abduc_damping" value="0.351111"/>
+
+  <xacro:property name="hip_limit_min" value="${-pi}"/>
+  <xacro:property name="hip_limit_max" value="${pi}"/>
+  <xacro:property name="hip_damping" value="0.351111"/>
+  
+  <xacro:property name="knee_limit_min" value="${-pi}"/>
+  <xacro:property name="knee_limit_max" value="${pi}"/>
+  <xacro:property name="knee_damping" value="0.351111"/>
+
+  <xacro:property name="spine_limit_min" value="${-pi/2}"/>
+  <xacro:property name="spine_limit_max" value="${pi/2}"/>
+  <xacro:property name="spine_damping" value="0.351111"/>
+
+  <xacro:property name="color_red" value="1.0 0.0 0.0"/>
+  <xacro:property name="color_green" value="0.0 1.0 0.0"/>
+  <xacro:property name="color_blue" value="0.0 0.0 1.0"/>
+  <xacro:property name="color_dark_gray" value="0.25 0.25 0.25"/>
+  <xacro:property name="color_gray" value="0.50 0.50 0.50"/>
+  <xacro:property name="color_light_gray" value="0.75 0.75 0.75"/>
+
+  
+
+<!-- 
+        <geom name="abduc_module_0" size="0.055 0.0175" pos="0.208 0.073 0" quat="0.707107 0 0.707107 0" type="cylinder"  group="1" density="1000" rgba="0.8 0.8 0.8 1"/>
+        <body name="hip_0" pos="0.293 0.095 0">
+          <inertial pos="0 -0.03 0" quat="0.5 0.5 -0.5 0.5" mass="1.15" diaginertia="0.00277437 0.00237427 0.00133927"/>
+          <joint name="ABDUC0" pos="0 0 0" ajxis="1 0 0" range="-0.707 0.707" damping="0.351111"/>
+          <geom name="hip_module_0" size="0.055 0.02" pos="0 -0.032 0" quat="0.707107 0.707107 0 0" type="cylinder" rgba="0.8 0.8 0.8 1"/>
+          
+          <body name="upper_0" pos="0 0.06 0" euler="0 -1.57 0">
+            <inertial pos="0 0 0" quat="0.5 0.5 0.5 0.5" mass="0.775" diaginertia="0.001 0.001 5e-05"/>
+            <joint name="HIP0" pos="0 0 0" axis="0 1 0" range="-3.1415926 3.1415926" damping="0.351111"/>
+            <geom name="knee_module_0" size="0.055 0.02" pos="0 -0.032 0" quat="0.707107 0.707107 0 0" type="cylinder" rgba="0.8 0.8 0 1"/>
+            <geom name="upper_link_0" size="0.103 0.011 0.0275" pos="-0.103 0 0" type="box" rgba="0.68 0.68 0.68 1"/>
+            
+            <body name="lower_0" pos="-0.206 0 0" >
+              <inertial pos="0.0343333 0 0" quat="0.5 0.5 0.5 0.5" mass="0.09" diaginertia="0.00087545 0.00056395 0.000345"/>
+              <joint name="KNEE0" pos="0 0 0" axis="0 1 0" range="-3.1415926 3.1415926" damping="0.501111"/>
+              <geom name="lower_link_0" size="0.013 0.103" pos="-0.103 0 0" quat="0.707107 0 0.707107 0" type="cylinder" contype="1" conaffinity="0" rgba="0.68 0.68 0.68 1"/>
+              <geom name="toe_0" size="0.0175" pos="-0.206 0 0" rgba="0.1 0.1 0.1 1" contype='4' />
+-->
+
+  <!-- XACRO MACROS -->
+  
+  <xacro:macro name="build_limb" params="limb_base_pos limb_index:=0">
+
+    <xacro:property name="front_back_sign" value="${1-2*(limb_index % 2)}"/>
+    <xacro:property name="left_right_sign" value="${1-2*(limb_index // 2)}"/>
+
+    <!-- front_back_sign:=1 left_right_sign:=1" -->
+    <body name="limb_base_${limb_index}" pos="${limb_base_pos}">
+      <geom name="abduc_module_${limb_index}" size="${motor_radius} ${motor_length/2}" 
+            pos="${front_back_sign*motor_length/2} 0 0" quat="0.707107 0 0.707107 0"
+            type="cylinder" group="2" mass="${motor_mass}" rgba="${color_light_gray} 1" />
+      
+      <body name="hip_${limb_index}" pos="${front_back_sign*limb_base_to_hip_joint_x} ${left_right_sign*limb_base_to_hip_joint_y} ${limb_base_to_hip_joint_z}">
+        <joint name="ABDUC${limb_index}" pos="0 0 0" axis="1 0 0" 
+               range="${abduc_limit_min} ${abduc_limit_max}" damping="${abduc_damping}" />
+        <geom name="hip_module_${limb_index}" size="${motor_radius} ${motor_length/2}" 
+              pos="${front_back_sign*hip_joint_to_hip_module_x} ${left_right_sign*hip_joint_to_hip_module_y} ${hip_joint_to_hip_module_z}"
+              quat="0.707107 0.707107 0 0" type="cylinder" group="2"
+              mass="${motor_mass}" rgba="${color_light_gray} 1" />
+              
+        <body name="upper_${limb_index}" pos="${front_back_sign*hip_joint_to_upper_x} ${left_right_sign*hip_joint_to_upper_y} ${hip_joint_to_upper_z}">
+          <joint name="HIP${limb_index}" pos="0 0 0" axis="0 1 0" 
+                range="${hip_limit_min} ${hip_limit_max}" damping="${hip_damping}"/>
+          <geom name="knee_module_${limb_index}" type="cylinder" size="${motor_radius} ${motor_length/2}" 
+                pos="${front_back_sign*upper_to_knee_module_x} ${left_right_sign*upper_to_knee_module_y} ${upper_to_knee_module_z}"
+                quat="0.707107 0.707107 0 0" group="2"
+                mass="${motor_mass}" rgba="${color_light_gray} 1" />
+          <geom name="upper_link_${limb_index}" type="box" size="${upper_link_width/2} ${upper_link_height/2} ${upper_link_length/2} "
+                pos="${front_back_sign*upper_to_upper_link_x} ${left_right_sign*upper_to_upper_link_y} ${upper_to_upper_link_z}"
+                mass="${upper_link_mass}" rgba="${color_gray} 1" />
+          <body name="lower_${limb_index}" pos="${upper_to_lower_x} ${upper_to_lower_y} ${upper_to_lower_z}">
+            <joint name="KNEE${limb_index}" pos="0 0 0" axis="0 1 0" 
+                  range="${knee_limit_min} ${knee_limit_max}" damping="${knee_damping}"/>
+            <geom name="lower_link_${limb_index}" type="cylinder" size="${lower_link_radius} ${lower_link_length/2}" 
+                  pos="0 0 ${-lower_link_length/2}" group="2"
+                  mass="${lower_link_mass}" rgba="${color_dark_gray} 1"/>
+            <geom name="toe_${limb_index}" size="${toe_radius}" pos="0 0 ${lower_to_toe_z} " 
+                  mass="${toe_mass}" rgba="0.1 0.1 0.1 1" contype='4' />
+          </body>
+        </body>
+      </body>
+    </body>
+	</xacro:macro>
+
+  <compiler angle="radian" autolimits="true"/>
+  
+  <option timestep="0.001" gravity="0 0 -9.81"> 
+	
+  <!-- https://github.com/deepmind/mujoco/issues/941 -->
+		<flag sensornoise="enable" energy="enable" contact="enable"/>
+	</option>
+
+  <default>
+    <geom contype='4' conaffinity='0'/> <!-- condim='1' solref='0.005 1' solimp ="0.9 0.95 0.001 0.5 2"/>-->
+  </default>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="512"/>
+    <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512" mark="cross" markrgb=".8 .8 .8"/>
+    <texture name="texgeom" type="cube" builtin="flat" mark="cross" width="127" height="1278"
+        rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+    <material name="matplane" reflectance="0.3" texture="texplane" texrepeat="1 1" texuniform="true"/>
+    <material name="matgeom" texture="texgeom" texuniform="true" rgba="0.8 0.6 .4 1"/>
+  </asset>
+
+  <worldbody>
+    <geom name="floor" pos="0 0 0" size="0 0 .25" type="plane" material="matplane" contype='2' conaffinity='4'/>
+    <light cutoff="100" diffuse="1 1 1" dir="-0 0 -1.3" directional="true" exponent="1" pos="0 0 1.3" specular=".1 .1 .1"/>
+    <body name="base">
+      <joint name="FLOATING" type="free"/>
+      <geom name="spine_tube" size="${spine_radius} ${spine_length}" type="cylinder" 
+            mass="${spine_mass}" euler="0 1.5708 0" group="1" rgba="0.4 0.4 0.4 0.5"/>  
+
+      <body name="front_body">
+        <joint name="SPINE" axis="1 0 0" range="${spine_limit_min} ${spine_limit_max}" stiffness="1000" damping="${spine_damping}"/>
+        <geom name="front_chassis" size="${body_length/2} ${body_width/2} ${body_height/2}" 
+              pos="${(body_length/2) + (spine_gap/2)} 0 0" type="box"  
+              group="1" mass="${body_mass}" rgba="0.25 0.25 0.25 0.5"/>
+        <geom name="battery" size="${battery_length/2} ${battery_width/2} ${battery_height/2}" 
+              pos="${spine_gap/2 + body_length/2} 0 -0.02" type="box"  
+              group="1" mass="${battery_mass}" rgba="0.8 0.8 0 1"/>
+        <xacro:build_limb limb_base_pos="${body_length + (spine_gap/2)} 0.070 0" limb_index="0" />
+        <xacro:build_limb limb_base_pos="${body_length + (spine_gap/2)} -0.070 0" limb_index="2" />
+      </body>
+
+      <body name="rear_chassis">
+        <site name="IMU"/>
+        <geom name="rear_body_frame" size="${body_length/2} ${body_width/2} ${body_height/2}" 
+              pos="${-(body_length/2) - (spine_gap/2)} 0 0" type="box"  
+              group="1" mass="${body_mass}" rgba="0.25 0.25 0.25 0.5"/>
+        <geom name="spine_module" size="${motor_radius} ${motor_length/2}" 
+            pos="${-(motor_length + spine_gap)/2} 0 ${spine_module_offset}" quat="0.707107 0 0.707107 0"
+            type="cylinder" group="1" mass="${motor_mass}" rgba="0.4 0.4 0.4 1" />
+        
+        <xacro:build_limb limb_base_pos="-${body_length + (spine_gap/2)} 0.070 0" limb_index="1" />
+        <xacro:build_limb limb_base_pos="-${body_length + (spine_gap/2)} -0.070 0" limb_index="3" />
+      </body>
+      
+      
+    </body>
+  </worldbody>
+
+
+  <actuator>
+    
+		<motor joint="ABDUC0" name="ABDUC0_act"/>
+    <motor joint="HIP0" name="HIP0_act"/>
+    <motor joint="KNEE0" name="KNEE0_act"/>
+
+    <motor joint="ABDUC1" name="ABDUC1_act"/>
+    <motor joint="HIP1" name="HIP1_act"/>
+    <motor joint="KNEE1" name="KNEE1_act"/>
+
+    <motor joint="ABDUC2" name="ABDUC2_act"/>
+    <motor joint="HIP2" name="HIP2_act"/>
+    <motor joint="KNEE2" name="KNEE2_act"/>
+
+    <motor joint="ABDUC3" name="ABDUC3_act"/>
+    <motor joint="HIP3" name="HIP3_act"/>
+    <motor joint="KNEE3" name="KNEE3_act"/>
+
+		<motor joint="SPINE" name="SPINE_act"/>
+		
+	</actuator>
+
+  <sensor>
+    <accelerometer name="ACCEL" site="IMU"/>
+    <gyro name="GYRO" site="IMU"/>
+    <framequat name="QUAT" objtype="site" objname="IMU"/>
+    <subtreecom name="COM" body="base"/>
+  </sensor>
+  
+</mujoco>
