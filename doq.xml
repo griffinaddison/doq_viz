@@ -34,60 +34,60 @@
     <light cutoff="100" diffuse="1 1 1" dir="-0 0 -1.3" directional="true" exponent="1" pos="0 0 1.3" specular=".1 .1 .1"/>
     <body name="body">
       <joint name="FLOATING" type="free"/>
-      <geom group="1" mass="0.67" name="kinegamiAndBoards" pos="0 0 0" rgba="0.88 0.88 0.88 0.3" size="0.125 0.094 0.025" type="box"/>
+      <geom group="1" mass="0.67" name="kinegamiAndBoards" pos="0 0 0" rgba="0.88 0.88 0.88 1.0" size="0.14 0.109 0.015" type="box"/>
       <!-- front_back_sign:=1 left_right_sign:=1" -->
-      <body name="hip_0" pos="0.125 0.094 0.0" quat=" 0.9659258 0 0.258819 0">
-        <geom group="2" mass="0.21" name="hip_motor_0" pos="0 0 0" quat="0.707107 0.707107 0 0" rgba="0 0 1.0 1" size="0.03 0.015" type="cylinder"/>
-        <body name="thigh_0" pos="0 0 -0.1" quat="0.8660254 0 -0.5 0">
+      <body name="hip_0" pos="-0.125 -0.094 0.0">
+        <geom group="2" mass="0.21" name="hip_motor_0" pos="0 -0.03 0" quat="0.707107 0.707107 0 0" rgba="0 0 1.0 1" size="0.03 0.0125" type="cylinder"/>
+        <body name="thigh_0" pos="0 0 0" quat=" 0.9659258 0 0.258819 0">
           <joint axis="0 1 0" damping="0.351111" name="HIP0" pos="0 0 0" range="-3.1415926 3.1415926"/>
-          <geom mass="0.0" name="thigh_0" pos="0 0 0.05" rgba="1.0 0.0 0.0 1" size="0.015 0.015 0.05" type="box"/>
-          <geom group="2" mass="0.21" name="knee_motor_0" pos="0 0 0" quat="0.707107 0.707107 0 0" rgba="0.0 1.0 0.0 1" size="0.03 0.015" type="cylinder"/>
-          <body name="shin_0" pos="0 0 -0.1">
+          <geom mass="0.0" name="thigh_0" pos="0 0 -0.05" rgba="0.8 0.8 0.8 1" size="0.015 0.015 0.05" type="box"/>
+          <geom group="2" mass="0.21" name="knee_motor_0" pos="0 0.03 -0.1" quat="0.707107 0.707107 0 0" rgba="0 1.0 0 1" size="0.03 0.0125" type="cylinder"/>
+          <body name="shin_0" pos="0 0 -0.1" quat="0.86603 0 -0.5 0">
             <joint axis="0 1 0" damping="0.351111" name="KNEE0" pos="0 0 0" range="-3.1415926 3.1415926"/>
-            <geom mass="0.0" name="shin_0" pos="0 0 0.05" rgba="0.0 0.0 1.0 1" size="0.015 0.015 0.05" type="box"/>
-            <geom contype="4" mass="0.03" name="toe_0" pos="0 0 0 " rgba="0.1 0.1 0.1 1" size="0.0175"/>
+            <geom mass="0.0" name="shin_0" pos="0 0 -0.05" rgba="0.8 0.8 0.8 1" size="0.015 0.015 0.05" type="box"/>
+            <geom contype="4" mass="0.03" name="toe_0" pos="0 0 -0.1 " quat="0.707107 0.707107 0 0" rgba="0.5 0.5 0.5 1" size="0.015 0.0525" type="cylinder"/>
           </body>
         </body>
       </body>
       <!-- front_back_sign:=1 left_right_sign:=1" -->
-      <body name="hip_1" pos="-0.125 0.094 0.0" quat=" 0.9659258 0 0.258819 0">
-        <geom group="2" mass="0.21" name="hip_motor_1" pos="0 0 0" quat="0.707107 0.707107 0 0" rgba="0 0 0.6699999999999999 1" size="0.03 0.015" type="cylinder"/>
-        <body name="thigh_1" pos="0 0 -0.1" quat="0.8660254 0 -0.5 0">
+      <body name="hip_1" pos="0.125 -0.094 0.0">
+        <geom group="2" mass="0.21" name="hip_motor_1" pos="0 -0.03 0" quat="0.707107 0.707107 0 0" rgba="0 0 0.6699999999999999 1" size="0.03 0.0125" type="cylinder"/>
+        <body name="thigh_1" pos="0 0 0" quat=" 0.9659258 0 0.258819 0">
           <joint axis="0 1 0" damping="0.351111" name="HIP1" pos="0 0 0" range="-3.1415926 3.1415926"/>
-          <geom mass="0.0" name="thigh_1" pos="0 0 0.05" rgba="1.0 0.0 0.0 1" size="0.015 0.015 0.05" type="box"/>
-          <geom group="2" mass="0.21" name="knee_motor_1" pos="0 0 0" quat="0.707107 0.707107 0 0" rgba="0.0 1.0 0.0 1" size="0.03 0.015" type="cylinder"/>
-          <body name="shin_1" pos="0 0 -0.1">
+          <geom mass="0.0" name="thigh_1" pos="0 0 -0.05" rgba="0.8 0.8 0.8 1" size="0.015 0.015 0.05" type="box"/>
+          <geom group="2" mass="0.21" name="knee_motor_1" pos="0 0.03 -0.1" quat="0.707107 0.707107 0 0" rgba="0 0.6699999999999999 0 1" size="0.03 0.0125" type="cylinder"/>
+          <body name="shin_1" pos="0 0 -0.1" quat="0.86603 0 -0.5 0">
             <joint axis="0 1 0" damping="0.351111" name="KNEE1" pos="0 0 0" range="-3.1415926 3.1415926"/>
-            <geom mass="0.0" name="shin_1" pos="0 0 0.05" rgba="0.0 0.0 1.0 1" size="0.015 0.015 0.05" type="box"/>
-            <geom contype="4" mass="0.03" name="toe_1" pos="0 0 0 " rgba="0.1 0.1 0.1 1" size="0.0175"/>
+            <geom mass="0.0" name="shin_1" pos="0 0 -0.05" rgba="0.8 0.8 0.8 1" size="0.015 0.015 0.05" type="box"/>
+            <geom contype="4" mass="0.03" name="toe_1" pos="0 0 -0.1 " quat="0.707107 0.707107 0 0" rgba="0.5 0.5 0.5 1" size="0.015 0.0525" type="cylinder"/>
           </body>
         </body>
       </body>
       <!-- front_back_sign:=1 left_right_sign:=1" -->
-      <body name="hip_2" pos="0.125 -0.094 0.0" quat=" 0.9659258 0 0.258819 0">
-        <geom group="2" mass="0.21" name="hip_motor_2" pos="0 0 0" quat="0.707107 0.707107 0 0" rgba="0 0 0.33999999999999997 1" size="0.03 0.015" type="cylinder"/>
-        <body name="thigh_2" pos="0 0 -0.1" quat="0.8660254 0 -0.5 0">
+      <body name="hip_2" pos="-0.125 0.094 0.0">
+        <geom group="2" mass="0.21" name="hip_motor_2" pos="0 0.03 0" quat="0.707107 0.707107 0 0" rgba="0 0 0.33999999999999997 1" size="0.03 0.0125" type="cylinder"/>
+        <body name="thigh_2" pos="0 0 0" quat=" 0.9659258 0 0.258819 0">
           <joint axis="0 1 0" damping="0.351111" name="HIP2" pos="0 0 0" range="-3.1415926 3.1415926"/>
-          <geom mass="0.0" name="thigh_2" pos="0 0 0.05" rgba="1.0 0.0 0.0 1" size="0.015 0.015 0.05" type="box"/>
-          <geom group="2" mass="0.21" name="knee_motor_2" pos="0 0 0" quat="0.707107 0.707107 0 0" rgba="0.0 1.0 0.0 1" size="0.03 0.015" type="cylinder"/>
-          <body name="shin_2" pos="0 0 -0.1">
+          <geom mass="0.0" name="thigh_2" pos="0 0 -0.05" rgba="0.8 0.8 0.8 1" size="0.015 0.015 0.05" type="box"/>
+          <geom group="2" mass="0.21" name="knee_motor_2" pos="0 -0.03 -0.1" quat="0.707107 0.707107 0 0" rgba="0 0.33999999999999997 0 1" size="0.03 0.0125" type="cylinder"/>
+          <body name="shin_2" pos="0 0 -0.1" quat="0.86603 0 -0.5 0">
             <joint axis="0 1 0" damping="0.351111" name="KNEE2" pos="0 0 0" range="-3.1415926 3.1415926"/>
-            <geom mass="0.0" name="shin_2" pos="0 0 0.05" rgba="0.0 0.0 1.0 1" size="0.015 0.015 0.05" type="box"/>
-            <geom contype="4" mass="0.03" name="toe_2" pos="0 0 0 " rgba="0.1 0.1 0.1 1" size="0.0175"/>
+            <geom mass="0.0" name="shin_2" pos="0 0 -0.05" rgba="0.8 0.8 0.8 1" size="0.015 0.015 0.05" type="box"/>
+            <geom contype="4" mass="0.03" name="toe_2" pos="0 0 -0.1 " quat="0.707107 0.707107 0 0" rgba="0.5 0.5 0.5 1" size="0.015 0.0525" type="cylinder"/>
           </body>
         </body>
       </body>
       <!-- front_back_sign:=1 left_right_sign:=1" -->
-      <body name="hip_3" pos="-0.125 -0.094 0.0" quat=" 0.9659258 0 0.258819 0">
-        <geom group="2" mass="0.21" name="hip_motor_3" pos="0 0 0" quat="0.707107 0.707107 0 0" rgba="0 0 0.010000000000000009 1" size="0.03 0.015" type="cylinder"/>
-        <body name="thigh_3" pos="0 0 -0.1" quat="0.8660254 0 -0.5 0">
+      <body name="hip_3" pos="0.125 0.094 0.0">
+        <geom group="2" mass="0.21" name="hip_motor_3" pos="0 0.03 0" quat="0.707107 0.707107 0 0" rgba="0 0 0.010000000000000009 1" size="0.03 0.0125" type="cylinder"/>
+        <body name="thigh_3" pos="0 0 0" quat=" 0.9659258 0 0.258819 0">
           <joint axis="0 1 0" damping="0.351111" name="HIP3" pos="0 0 0" range="-3.1415926 3.1415926"/>
-          <geom mass="0.0" name="thigh_3" pos="0 0 0.05" rgba="1.0 0.0 0.0 1" size="0.015 0.015 0.05" type="box"/>
-          <geom group="2" mass="0.21" name="knee_motor_3" pos="0 0 0" quat="0.707107 0.707107 0 0" rgba="0.0 1.0 0.0 1" size="0.03 0.015" type="cylinder"/>
-          <body name="shin_3" pos="0 0 -0.1">
+          <geom mass="0.0" name="thigh_3" pos="0 0 -0.05" rgba="0.8 0.8 0.8 1" size="0.015 0.015 0.05" type="box"/>
+          <geom group="2" mass="0.21" name="knee_motor_3" pos="0 -0.03 -0.1" quat="0.707107 0.707107 0 0" rgba="0 0.010000000000000009 0 1" size="0.03 0.0125" type="cylinder"/>
+          <body name="shin_3" pos="0 0 -0.1" quat="0.86603 0 -0.5 0">
             <joint axis="0 1 0" damping="0.351111" name="KNEE3" pos="0 0 0" range="-3.1415926 3.1415926"/>
-            <geom mass="0.0" name="shin_3" pos="0 0 0.05" rgba="0.0 0.0 1.0 1" size="0.015 0.015 0.05" type="box"/>
-            <geom contype="4" mass="0.03" name="toe_3" pos="0 0 0 " rgba="0.1 0.1 0.1 1" size="0.0175"/>
+            <geom mass="0.0" name="shin_3" pos="0 0 -0.05" rgba="0.8 0.8 0.8 1" size="0.015 0.015 0.05" type="box"/>
+            <geom contype="4" mass="0.03" name="toe_3" pos="0 0 -0.1 " quat="0.707107 0.707107 0 0" rgba="0.5 0.5 0.5 1" size="0.015 0.0525" type="cylinder"/>
           </body>
         </body>
       </body>

@@ -21,12 +21,12 @@
   <!-- Body parameters -->
 
   <xacro:property name="motor_radius" value="0.03"/>
-  <xacro:property name="motor_length" value="0.03"/>
+  <xacro:property name="motor_length" value="0.025"/>
   <xacro:property name="motor_mass" value="0.21"/>
 
   <xacro:property name="body_length" value="0.25"/>
   <xacro:property name="body_width" value="0.188"/>
-  <xacro:property name="body_height" value="0.05"/>
+  <xacro:property name="body_height" value="0.03"/>
   <xacro:property name="body_mass" value="0.67"/> <!--INERTIA PROB TOO HIGH, maybe make this a pointish mass-->
 
   <xacro:property name="body_to_hip_x" value="${body_length/2}"/>
@@ -62,38 +62,39 @@
   
   <xacro:macro name="build_limb" params="limb_base_pos limb_index:=0">
 
-    <xacro:property name="front_back_sign" value="${1-2*(limb_index % 2)}"/>
-    <xacro:property name="left_right_sign" value="${1-2*(limb_index // 2)}"/>
+    <xacro:property name="front_back_sign" value="${-1+2*(limb_index % 2)}"/>
+    <xacro:property name="left_right_sign" value="${-1+2*(limb_index // 2)}"/>
 
     <!-- front_back_sign:=1 left_right_sign:=1" -->
 
 
-    <body name="hip_${limb_index}" pos="${front_back_sign*body_to_hip_x} ${left_right_sign*body_to_hip_y} ${body_to_hip_z}" quat=" 0.9659258 0 0.258819 0">
+    <body name="hip_${limb_index}" pos="${front_back_sign*body_to_hip_x} ${left_right_sign*body_to_hip_y} ${body_to_hip_z}" >
       <geom name="hip_motor_${limb_index}" size="${motor_radius} ${motor_length/2}" 
-              pos="0 0 0"
+              pos="0 ${left_right_sign*0.03} 0"
               quat="0.707107 0.707107 0 0" type="cylinder" group="2"
               mass="${motor_mass}" rgba="0 0 ${1 - 0.33 * limb_index} 1" />
 
-      <body name="thigh_${limb_index}" pos="0 0 ${-thigh_length}" quat="0.8660254 0 -0.5 0" >
+      <body name="thigh_${limb_index}" pos="0 0 0" quat=" 0.9659258 0 0.258819 0">
         <joint name="HIP${limb_index}" pos="0 0 0" axis="0 1 0" 
                 range="${hip_limit_min} ${hip_limit_max}" damping="${hip_damping}"/>
         <geom name="thigh_${limb_index}" type="box" size="${thigh_width/2} ${thigh_height/2} ${thigh_length/2}"
-                pos="0 0 ${thigh_length/2}"
-                mass="${thigh_mass}" rgba="${color_red} 1" />
+                pos="0 0 ${-thigh_length/2}"
+                mass="${thigh_mass}" rgba="0.8 0.8 0.8 1" />
         <geom name="knee_motor_${limb_index}" type="cylinder" size="${motor_radius} ${motor_length/2}" 
-                pos="0 0 0"
+                pos="0 ${-left_right_sign*0.03} ${-thigh_length}"
                 quat="0.707107 0.707107 0 0" group="2"
-                mass="${motor_mass}" rgba="${color_green} 1" />
+                mass="${motor_mass}" rgba="0 ${1 - 0.33 * limb_index} 0 1" />
 
 
-        <body name="shin_${limb_index}" pos="0 0 ${-shin_length}"  >
+        <body name="shin_${limb_index}" pos="0 0 ${-shin_length}"  quat="0.86603 0 -0.5 0">
           <joint name="KNEE${limb_index}" pos="0 0 0" axis="0 1 0" 
                 range="${knee_limit_min} ${knee_limit_max}" damping="${knee_damping}"/>
           <geom name="shin_${limb_index}" type="box" size="${shin_width/2} ${shin_height/2} ${shin_length/2}"
-                pos="0 0 ${shin_length/2}"
-                mass="${shin_mass}" rgba="${color_blue} 1" />
-          <geom name="toe_${limb_index}" size="${toe_radius}" pos="0 0 0 " 
-                mass="${toe_mass}" rgba="0.1 0.1 0.1 1" contype='4' />
+                pos="0 0 ${-shin_length/2}"
+                mass="${shin_mass}" rgba="0.8 0.8 0.8 1" />
+          <geom name="toe_${limb_index}" type="cylinder" size="${shin_width/2} 0.0525" pos="0 0 ${-shin_length} " 
+                quat="0.707107 0.707107 0 0"
+                mass="${toe_mass}" rgba="0.5 0.5 0.5 1" contype='4' />
 
         </body>
       </body>
@@ -126,9 +127,9 @@
     <light cutoff="100" diffuse="1 1 1" dir="-0 0 -1.3" directional="true" exponent="1" pos="0 0 1.3" specular=".1 .1 .1"/>
     <body name="body">
       <joint name="FLOATING" type="free"/>
-      <geom name="kinegamiAndBoards" size="${body_length/2} ${body_width/2} ${body_height/2}" 
+      <geom name="kinegamiAndBoards" size="${(body_length/2) + 0.015} ${(body_width/2) + 0.015} ${body_height/2}" 
               pos="0 0 0" type="box"  
-              group="1" mass="${body_mass}" rgba="0.88 0.88 0.88 0.3"/> 
+              group="1" mass="${body_mass}" rgba="0.88 0.88 0.88 1.0"/> 
 
       <xacro:build_limb limb_base_pos="${body_length/2} ${body_width/2} 0" limb_index="0" />
       <xacro:build_limb limb_base_pos="-${body_length/2} ${body_width/2} 0" limb_index="1" />
