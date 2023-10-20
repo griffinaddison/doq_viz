@@ -40,7 +40,7 @@
 
   <xacro:property name="hip_limit_min" value="${-pi}"/>
   <xacro:property name="hip_limit_max" value="${pi}"/>
-  <xacro:property name="hip_damping" value="0.351111"/> <!-- stolen from twist, update this -->
+  <xacro:property name="hip_damping" value="0.01"/> <!-- update -->
 
   <xacro:property name="shin_length" value="0.1"/>
   <xacro:property name="shin_width" value="0.03"/>
@@ -49,7 +49,7 @@
 
   <xacro:property name="knee_limit_min" value="${-pi}"/>
   <xacro:property name="knee_limit_max" value="${pi}"/>
-  <xacro:property name="knee_damping" value="0.351111"/>
+  <xacro:property name="knee_damping" value="0.01"/>
  
   <xacro:property name="toe_radius" value="0.0175"/> <!--toe properties also stolen from twist-->
   <xacro:property name="toe_mass" value="0.030"/>  <!--GTT: Grand Theft Toe-->
@@ -71,7 +71,7 @@
     <body name="hip_${limb_index}" pos="${front_back_sign*body_to_hip_x} ${left_right_sign*body_to_hip_y} ${body_to_hip_z}" >
       <geom name="hip_motor_${limb_index}" size="${motor_radius} ${motor_length/2}" 
               pos="0 ${left_right_sign*0.03} 0"
-              quat="0.707107 0.707107 0 0" type="cylinder" group="2"
+              quat="0.707107 0.707107 0 0" type="cylinder"
               mass="${motor_mass}" rgba="0 0 ${1 - 0.33 * limb_index} 1" />
 
       <body name="thigh_${limb_index}" pos="0 0 0" quat=" 0.9659258 0 0.258819 0">
@@ -82,7 +82,7 @@
                 mass="${thigh_mass}" rgba="0.8 0.8 0.8 1" />
         <geom name="knee_motor_${limb_index}" type="cylinder" size="${motor_radius} ${motor_length/2}" 
                 pos="0 ${-left_right_sign*0.03} ${-thigh_length}"
-                quat="0.707107 0.707107 0 0" group="2"
+                quat="0.707107 0.707107 0 0"
                 mass="${motor_mass}" rgba="0 ${1 - 0.33 * limb_index} 0 1" />
 
 
@@ -129,7 +129,7 @@
       <joint name="FLOATING" type="free"/>
       <geom name="kinegamiAndBoards" size="${(body_length/2) + 0.015} ${(body_width/2) + 0.015} ${body_height/2}" 
               pos="0 0 0" type="box"  
-              group="1" mass="${body_mass}" rgba="0.88 0.88 0.88 1.0"/> 
+              mass="${body_mass}" rgba="0.88 0.88 0.88 1.0"/> 
 
       <xacro:build_limb limb_base_pos="${body_length/2} ${body_width/2} 0" limb_index="0" />
       <xacro:build_limb limb_base_pos="-${body_length/2} ${body_width/2} 0" limb_index="1" />
