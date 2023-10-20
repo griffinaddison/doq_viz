@@ -4,7 +4,7 @@ import mujoco
 import mujoco_viewer
 import time
 
-model = mujoco.MjModel.from_xml_path("/home/griffin/Documents/mujoco/twist_vis/twist.xml")
+model = mujoco.MjModel.from_xml_path("/home/griffin/Documents/GitHub/doq_viz/twist.xml")
 data = mujoco.MjData(model)
 
 # create the viewer object

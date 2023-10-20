@@ -4,7 +4,7 @@ import mujoco
 import mujoco_viewer
 import time
 
-model = mujoco.MjModel.from_xml_path("/home/griffin/Documents/mujoco/doq_vis/doq.xml")
+model = mujoco.MjModel.from_xml_path("/home/griffin/Documents/GitHub/doq_viz/doq.xml")
 data = mujoco.MjData(model)
 
 # create the viewer object
@@ -15,7 +15,7 @@ mujoco.mj_step(model,data)
 t_start = time.time()
 
 
-for _ in range(10000):
+for _ in range(100000):
     if viewer.is_alive:
         t = time.time()-t_start
 
@@ -34,4 +34,4 @@ for _ in range(10000):
         break
 
 # close
-viewer.close()
+# viewer.close()
